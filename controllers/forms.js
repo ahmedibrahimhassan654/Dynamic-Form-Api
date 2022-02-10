@@ -30,3 +30,34 @@ exports.createnewForm = asyncHandler(async (req, res, next) => {
     data: form,
   });
 });
+
+
+// @desc      Get single form
+// @route     GET /api/v1/form/:id
+// @access    Public
+exports.getForm = asyncHandler(async (req, res, next) => {
+    const form = await Form.findById(req.params.id);
+  
+    if (!form) {
+      return next(
+        new ErrorResponse(`form not found with id of ${req.params.id}`, 404)
+      );
+    }
+  
+    res.status(200).json({ success: true, data: form });
+  });
+
+// @desc      Get all form
+// @route     GET /api/v1/form
+// @access    Public
+exports.getAllForms = asyncHandler(async (req, res, next) => {
+    const form = await Form.find({});
+  
+    if (!form) {
+      return next(
+        new ErrorResponse(`form not found with id of ${req.params.id}`, 404)
+      );
+    }
+  
+    res.status(200).json({ success: true, data: form });
+  });

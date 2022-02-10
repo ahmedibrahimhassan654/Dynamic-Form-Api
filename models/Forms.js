@@ -11,6 +11,7 @@ const FormSchema = new mongoose.Schema(
       enum: ["Ar", "Eng"],
       default: "Eng",
     },
+    fields: [],
   },
   {
     toJSON: { virtuals: true },

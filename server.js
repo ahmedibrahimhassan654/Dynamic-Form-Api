@@ -10,8 +10,8 @@ dotenv.config({ path: "./config/config.env" });
 // Connect to database
 connectDB();
 const app = express();
-//Route files
-// const bootcamps = require("./routes/bootcamps");
+// Route files
+const forms = require("./routes/forms");
 
 //Body parser
 app.use(express.json());
@@ -24,8 +24,8 @@ if (process.env.NODE_ENV === "development") {
 // Enable CORS
 app.use(cors());
 
-// Mount routers
-// app.use("/api/v1/bootcamps", bootcamps);
+//Mount routers
+app.use("/api/v1/forms", forms);
 
 const PORT = process.env.PORT || 5000;
 

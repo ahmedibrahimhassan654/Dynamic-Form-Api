@@ -2,26 +2,11 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const Form = require("../models/Forms");
 const Text = require("../models/Text");
+const Select = require("../models/Select");
 // @desc      Create Form
 // @route     POST /api/v1/Forms
 // @access    public
 exports.createnewForm = asyncHandler(async (req, res, next) => {
-  // // Add user to req,body
-  // req.body.user = req.user.id;
-
-  // // Check for published bootcamp
-  // const publishedBootcamp = await Bootcamp.findOne({ user: req.user.id });
-
-  // // If the user is not an admin, they can only add one bootcamp
-  // if (publishedBootcamp && req.user.role !== 'admin') {
-  //   return next(
-  //     new ErrorResponse(
-  //       `The user with ID ${req.user.id} has already published a bootcamp`,
-  //       400
-  //     )
-  //   );
-  // }
-
   const form = await Form.create(req.body);
 
   res.status(201).json({
@@ -106,7 +91,6 @@ exports.addInputText = asyncHandler(async (req, res, next) => {
   res.status(200).json({ success: true, data: updatedForm });
 });
 
-
 // @desc      add input select
 // @route     put /api/v1/form/:id/select
 // @access    Public
@@ -127,8 +111,10 @@ exports.addInputSelect = asyncHandler(async (req, res, next) => {
     field_placeholder_Ar,
     field_type,
     field_value,
+    field_options,
   } = req.body;
-  const newInputText = new Text({
+
+  const newInputSelect = new Select({
     field_id,
     field_label,
     field_label_Ar,
@@ -137,14 +123,15 @@ exports.addInputSelect = asyncHandler(async (req, res, next) => {
     field_placeholder_Ar,
     field_type,
     field_value,
+    field_options,
   });
-
+  console.log(newInputSelect);
   //find if the newinputtext is created
   await Form.updateOne(
     { _id: req.params.id },
     {
       $addToSet: {
-        fields: newInputText,
+        fields: newInputSelect,
       },
     }
   );

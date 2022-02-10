@@ -105,3 +105,50 @@ exports.addInputText = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ success: true, data: updatedForm });
 });
+
+
+// @desc      add input select
+// @route     put /api/v1/form/:id/select
+// @access    Public
+exports.addInputSelect = asyncHandler(async (req, res, next) => {
+  let form = await Form.findById(req.params.id);
+
+  if (!form) {
+    return next(
+      new ErrorResponse(`form not found with id of ${req.params.id}`, 404)
+    );
+  }
+  const {
+    field_id,
+    field_label,
+    field_label_Ar,
+    field_mandatory,
+    field_placeholder,
+    field_placeholder_Ar,
+    field_type,
+    field_value,
+  } = req.body;
+  const newInputText = new Text({
+    field_id,
+    field_label,
+    field_label_Ar,
+    field_mandatory,
+    field_placeholder,
+    field_placeholder_Ar,
+    field_type,
+    field_value,
+  });
+
+  //find if the newinputtext is created
+  await Form.updateOne(
+    { _id: req.params.id },
+    {
+      $addToSet: {
+        fields: newInputText,
+      },
+    }
+  );
+  const updatedForm = await Form.findById(req.params.id);
+
+  res.status(200).json({ success: true, data: updatedForm });
+});

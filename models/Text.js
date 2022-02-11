@@ -12,11 +12,12 @@ const TextSchema = new mongoose.Schema(
     },
     field_label_Ar: {
       type: String,
-      required: [true, "Please add input text label "],
+      required: [true, "Please add input text label_Ar "],
     },
     field_mandatory: {
       type: Boolean,
       default: false,
+      required: [true, "Please add input text field_mandatory "],
     },
     field_placeholder: {
       type: String,

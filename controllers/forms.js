@@ -66,7 +66,7 @@ exports.addInputText = asyncHandler(async (req, res, next) => {
     field_type,
     field_value,
   } = req.body;
-  const newInputText = new Text({
+  const newInputText = {
     field_id,
     field_label,
     field_label_Ar,
@@ -75,9 +75,11 @@ exports.addInputText = asyncHandler(async (req, res, next) => {
     field_placeholder_Ar,
     field_type,
     field_value,
-  });
+  };
 
-  //find if the newinputtext is created
+  const inputText = await new Text(newInputText).save();
+
+  // //find if the newinputtext is created
   await Form.updateOne(
     { _id: req.params.id },
     {
@@ -86,9 +88,12 @@ exports.addInputText = asyncHandler(async (req, res, next) => {
       },
     }
   );
+
   const updatedForm = await Form.findById(req.params.id);
 
-  res.status(200).json({ success: true, data: updatedForm });
+  res
+    .status(200)
+    .json({ success: true, data: updatedForm, enteredElement: newInputText });
 });
 
 // @desc      add input select
@@ -114,7 +119,7 @@ exports.addInputSelect = asyncHandler(async (req, res, next) => {
     field_options,
   } = req.body;
 
-  const newInputSelect = new Select({
+  const newInputSelect = {
     field_id,
     field_label,
     field_label_Ar,
@@ -124,14 +129,15 @@ exports.addInputSelect = asyncHandler(async (req, res, next) => {
     field_type,
     field_value,
     field_options,
-  });
-  console.log(newInputSelect);
+  };
+  const inputSelect = await new Select(newInputSelect).save();
+
   //find if the newinputtext is created
   await Form.updateOne(
     { _id: req.params.id },
     {
       $addToSet: {
-        fields: newInputSelect,
+        fields: inputSelect,
       },
     }
   );

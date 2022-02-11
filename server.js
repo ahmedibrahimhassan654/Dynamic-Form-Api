@@ -27,6 +27,10 @@ app.use(cors());
 //Mount routers
 app.use("/api/v1/forms", forms);
 
+
+
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(
